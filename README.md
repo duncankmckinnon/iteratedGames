@@ -1,0 +1,2 @@
+# iteratedGames
+Iterated game modeling
