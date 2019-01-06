@@ -30,22 +30,23 @@ forgiving <- list(
   }
 )
 
-random_ <- list(
-  name = 'random',
+random_choice <- list(
+  name = 'random_choice',
   f = function(prev, n) {
     return(sample(c(0, 1), 1, replace = T))
   }
 )
 
-tit_4_tat <- list(
-  name = 'tit_4_tat',
+tit_for_tat <- list(
+  name = 'tit_for_tat',
   f = function(prev, n) {
     return(prev[n])
   }
 )
 
-pre_tit_4_tat <- list(
-  name = 'pre_tit_4_tat',
+
+pre_tit_for_tat <- list(
+  name = 'pre_tit_for_tat',
   f = function(prev, n) {
     return(ifelse(n == 1, 0, prev[n-1]))
   }
@@ -55,7 +56,7 @@ pre_tit_4_tat <- list(
 
 pd <- list(
   outcome = function(me, you) {
-    return(ifelse(me == you && me == 1, -1, me - you))
+    return(ifelse(me && you, -1, me - you))
   },
   
   round = function(r1, r2) {
@@ -67,8 +68,8 @@ pd <- list(
                   random = T,
                   start = NA) {
     names <- c(f1$name, f2$name)
-    turns <- array(dim = c(2, rounds + 1), dimnames = list(names, c('init', 1:10)))
-    outcomes <- array(dim = c(2, rounds), dimnames = list(names, 1:10))
+    turns <- array(dim = c(2, rounds + 1), dimnames = list(names, c('init', 1:rounds)))
+    outcomes <- array(dim = c(2, rounds), dimnames = list(names, 1:rounds))
     
     if (!random && !is.na(start) && length(start) == 2) {
       turns[1:2, 1] <- start
