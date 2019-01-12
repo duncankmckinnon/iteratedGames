@@ -1,14 +1,14 @@
-library(shiny)
-library(plotly)
+require(shiny)
+require(plotly)
 source('iteratedPrisonersDilema.R')
 
 strategies <- list(optimist,
                    pessimist,
                    forgiving,
                    vengeful,
-                   random_,
-                   tit_4_tat,
-                   pre_tit_4_tat)
+                   random_choice,
+                   tit_for_tat,
+                   pre_tit_for_tat)
 names(strategies) <- lapply(strategies, "[[", 'name')
 
 # Define UI for application that draws a histogram
@@ -27,7 +27,7 @@ ui <- fluidPage(
            "my_strategy",
            "Select your strategy:",
            names(strategies),
-           selected = 'random'
+           selected = 'random_choice'
          ),
          radioButtons(
            "my_start",
@@ -44,7 +44,7 @@ ui <- fluidPage(
            "their_strategy",
            "Select opponent strategy:",
            names(strategies),
-           selected = 'random'
+           selected = 'random_choice'
          ),
          radioButtons(
            "their_start",
@@ -77,7 +77,7 @@ ui <- fluidPage(
    )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic required to simulate iterated dilema over the rounds
 server <- function(input, output) {
   observeEvent(input$RUN, {
     f1 <- strategies[[input$my_strategy]]
